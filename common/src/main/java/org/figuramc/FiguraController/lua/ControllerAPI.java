@@ -81,7 +81,7 @@ public class ControllerAPI {
             hidDevice.open();
 
         try {
-            byte[] bytes = ArrayUtils.toPrimitive(hidDevice.read());
+            byte[] bytes = hidDevice.readAll(0);
             LuaValue table = NbtToLua.convert(new ByteArrayTag(bytes));
             return table;
         } catch (Exception e) {
