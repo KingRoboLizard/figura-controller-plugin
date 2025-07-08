@@ -24,56 +24,22 @@ import org.figuramc.FiguraController.ControllerPlugin;
 
 import net.minecraft.nbt.ByteArrayTag;
 
+import org.figuramc.FiguraController.ControllerHolder;
+
 @LuaWhitelist
 @LuaTypeDoc(name = "ControllerAPI", value = "controller")
 public class ControllerAPI {
-    private HidDevice hidDevice;
-
-    private boolean connected = false;
-
-    private final HidServicesListener controllerListener = new HidServicesListener() {
-        @Override
-        public void hidDeviceAttached(HidServicesEvent event) {
-            if (!connected) {
-                if (event.getHidDevice().getUsage() == 5) {
-                    hidDevice = event.getHidDevice();
-                    connected = true;
-                }
-            }
-        }
-
-        @Override
-        public void hidDeviceDetached(HidServicesEvent event) {
-            connected = false;
-            hidDevice = null;
-        }
-
-        @Override
-        public void hidFailure(HidServicesEvent event) {
-
-        }
-
-        @Override
-        public void hidDataReceived(HidServicesEvent event) {
-        }
-    };
-
+	
+	public static ControllerHolder controller = ControllerHolder.getInstance();
+	
     public ControllerAPI(Avatar owner) {
-        for (HidDevice hid : HidManager.getHidServices().getAttachedHidDevices()) {
-            if (hid.getUsage() == 5) {
-                this.hidDevice = hid;
-                connected = true;
-                ControllerPlugin.LOGGER.info("" + hidDevice.getVendorId());
-                ControllerPlugin.LOGGER.info("" + hidDevice.getProductId());
-                break;
-            }
-        }
-        HidManager.getHidServices().addHidServicesListener(controllerListener);
     }
 
     @LuaWhitelist
     @LuaMethodDoc("controller.read")
     public LuaValue read() {
+		HidDevice hidDevice = controller.hidDevice;
+		
         if (hidDevice == null)
             return null;
 
@@ -100,6 +66,8 @@ public class ControllerAPI {
     @LuaMethodDoc(overloads = @LuaMethodOverload(argumentTypes = { LuaValue.class, Integer.class }, argumentNames = {
             "data", "id" }), value = "controller.write")
     public int write(@LuaNotNil LuaValue data, int id) {
+		HidDevice hidDevice = controller.hidDevice;
+		
         if (!data.istable())
             throw new LuaError("Expected table, got " + data.typename());
 
@@ -126,7 +94,7 @@ public class ControllerAPI {
     @LuaWhitelist
     @LuaMethodDoc("controller.isConnected")
     public boolean isConnected() {
-        return connected;
+        return controller.connected;
     }
 
     @Override

@@ -19,7 +19,6 @@ import java.util.List;
 public class ControllerPlugin implements FiguraAPI {
     public static final String PLUGIN_ID = "figuraController";
     public static final Logger LOGGER = LoggerFactory.getLogger(PLUGIN_ID);
-    // private Avatar avatar;
 
     public ControllerPlugin() {
     }
