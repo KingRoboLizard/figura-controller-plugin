@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${display_name}",
+  "description": "${description}",
+  "mixins": [
+    "figuracontroller-common.mixins.json"
+  ],
+  "authors": [
+    "${authors}"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "Insert License Here",
+  "icon": "assets/examplemod/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "org.figuramc.exampleplugin.fabric.ExamplePluginFabric"
+    ],
+    "figura_api": [
+      "org.figuramc.FiguraController.ControllerPlugin"
+    ]
+  },
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.21",
+    "figura": ">=${figura_version}"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "org.figuramc.FiguraController.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [],
+  "mixins": [
+    "FiguraAPIManagerMixin",
+    "FiguraDocsManagerMixin",
+    "FiguraGlobalsDocsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
