@@ -24,6 +24,6 @@ public class FiguraAPIManagerMixin {
     static {
         WHITELISTED_CLASSES.add(ControllerAPI.class);
 
-        API_GETTERS.put("controller", r -> new ControllerAPI(r.owner));
+        API_GETTERS.put("controller", r -> new ControllerAPI());
     }
 }

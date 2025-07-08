@@ -1,6 +1,5 @@
 package org.figuramc.FiguraController.lua;
 
-import org.figuramc.figura.avatar.Avatar;
 import org.figuramc.figura.lua.LuaNotNil;
 import org.figuramc.figura.lua.LuaWhitelist;
 import org.figuramc.figura.lua.NbtToLua;
@@ -9,18 +8,9 @@ import org.figuramc.figura.lua.docs.LuaMethodOverload;
 import org.figuramc.figura.lua.docs.LuaTypeDoc;
 
 import org.hid4java.HidDevice;
-import org.hid4java.HidManager;
-import org.hid4java.HidServicesListener;
-import org.hid4java.event.HidServicesEvent;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
-
-import java.nio.ByteBuffer;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import org.figuramc.FiguraController.ControllerPlugin;
 
 import net.minecraft.nbt.ByteArrayTag;
 
@@ -29,17 +19,17 @@ import org.figuramc.FiguraController.ControllerHolder;
 @LuaWhitelist
 @LuaTypeDoc(name = "ControllerAPI", value = "controller")
 public class ControllerAPI {
-	
-	public static ControllerHolder controller = ControllerHolder.getInstance();
-	
-    public ControllerAPI(Avatar owner) {
+
+    public static ControllerHolder controller = ControllerHolder.getInstance();
+
+    public ControllerAPI() {
     }
 
     @LuaWhitelist
     @LuaMethodDoc("controller.read")
     public LuaValue read() {
-		HidDevice hidDevice = controller.hidDevice;
-		
+        HidDevice hidDevice = controller.hidDevice;
+
         if (hidDevice == null)
             return null;
 
@@ -55,24 +45,16 @@ public class ControllerAPI {
         }
     }
 
-    public byte[] longToBytes(long x) {
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-        buffer.putLong(x);
-        byte[] bufferArr = buffer.array();
-        return new byte[] { bufferArr[7], bufferArr[6], bufferArr[5], bufferArr[4] };
-    }
-
     @LuaWhitelist
     @LuaMethodDoc(overloads = @LuaMethodOverload(argumentTypes = { LuaValue.class, Integer.class }, argumentNames = {
             "data", "id" }), value = "controller.write")
     public int write(@LuaNotNil LuaValue data, int id) {
-		HidDevice hidDevice = controller.hidDevice;
-		
+        HidDevice hidDevice = controller.hidDevice;
+
         if (!data.istable())
             throw new LuaError("Expected table, got " + data.typename());
 
         if (hidDevice == null) {
-            ControllerPlugin.LOGGER.info("no hid selected");
             return -1;
         }
 
